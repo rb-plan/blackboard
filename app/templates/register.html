@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<div class="register-container">
+    <h2>Register</h2>
+    <form method="POST" class="register-form">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.username.label }} 
+            {{ form.username(class="form-control", placeholder="Choose a username") }}
+        </div>
+        <div class="form-group">
+            {{ form.email.label }} 
+            {{ form.email(class="form-control", placeholder="Enter your email") }}
+        </div>
+        <div class="form-group">
+            {{ form.password.label }} 
+            {{ form.password(class="form-control", placeholder="Choose a password") }}
+        </div>
+        <div class="form-group">
+            {{ form.confirm_password.label }} 
+            {{ form.confirm_password(class="form-control", placeholder="Confirm your password") }}
+        </div>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+</div>
+{% endblock %}

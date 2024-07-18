@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block title %}Chat{% endblock %}
+{% block additional_styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='chat.css') }}">
+{% endblock %}
+{% block content %}
+<div class="chat-container">
+    <h1>Chat Room</h1>
+    <div id="chat-window">
+        <div id="output"></div>
+        <div id="feedback"></div>
+    </div>
+    <div class="chat-input-container">
+        <input id="username" type="hidden" value="{{ current_user.username }}">
+        <input id="message" type="text" placeholder="Type your message here..." autofocus>
+        <button id="send" class="btn btn-primary">Send</button>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var socket = io.connect("http://" + document.domain + ":" + location.port);
+
+        socket.on("message", function(data) {
+            var output = document.getElementById("output");
+            var feedback = document.getElementById("feedback");
+            feedback.innerHTML = "";
+            output.innerHTML += "<p><strong>" + data.username + ":</strong> " + data.message + "</p>";
+            output.scrollTop = output.scrollHeight;  // 自动滚动到底部
+        });
+
+        document.getElementById("send").onclick = function() {
+            var username = document.getElementById("username").value;
+            var message = document.getElementById("message").value;
+            if (message.trim() !== "") {
+                socket.emit("message", {username: username, message: message});
+                document.getElementById("message").value = "";
+            }
+        };
+
+        document.getElementById("message").onkeypress = function(event) {
+            if (event.key === "Enter") {
+                document.getElementById("send").click();
+            }
+        };
+    });
+</script>
+{% endblock %}
