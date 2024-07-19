@@ -3,16 +3,15 @@ from app import app, db, bcrypt, socketio, send
 from app.forms import RegistrationForm, LoginForm, PostForm
 from app.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
-# from flask_socketio import SocketIO, send
-
-# socketio = SocketIO(app)
 
 @app.route("/")
 @app.route("/home")
 def home():
     # posts = Post.query.all()
     posts = Post.query.order_by(Post.date_posted.desc()).all()
-    return render_template('home.html', posts=posts)
+    base_url = app.config['BASE_URL']
+    # return render_template('index.html', base_url=base_url)
+    return render_template('home.html', posts=posts, base_url=base_url)
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
