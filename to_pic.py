@@ -4,7 +4,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import mysql.connector
 from matplotlib.dates import DateFormatter, HourLocator
-import io
 
 def fetch_data():
     # Connect to MySQL database
@@ -74,10 +73,8 @@ def plot_data():
     plt.xticks(rotation=45)
     plt.grid(True)
 
-    # Save the plot to a BytesIO object
-    buf = io.BytesIO()
-    plt.savefig(buf, format='png')
-    buf.seek(0)
+    plt.savefig('static/plot.png')
     plt.close()
 
-    return buf.getvalue()
+if __name__ == '__main__':
+    plot_data()
