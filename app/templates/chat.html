@@ -15,6 +15,7 @@
 </div>
 {% endblock %}
 {% block scripts %}
+<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         var socket = io.connect("http://" + document.domain + ":" + location.port);
