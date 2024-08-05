@@ -3,7 +3,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import mysql.connector
-from matplotlib.dates import DateFormatter, HourLocator
+from matplotlib.dates import DateFormatter, DayLocator
 import io
 
 def fetch_data():
@@ -36,8 +36,8 @@ def fetch_data():
     df['ctime'] = pd.to_datetime(df['ctime'])
     df.set_index('ctime', inplace=True)
 
-    # Resample the data to every 10 minutes
-    df_resampled = df.resample('10T').mean()
+    # Resample the data to every 20 minutes
+    df_resampled = df.resample('20T').mean()
 
     # Drop rows with NaN values that might result from resampling
     df_resampled = df_resampled.dropna()
@@ -56,7 +56,7 @@ def plot_data():
     ax1.set_ylabel('Temperature (°C)', color='tab:red', fontsize=14)
     ax1.plot(timestamps, temperatures, color='tab:red', label='Temperature', linestyle='-', marker='o')
     ax1.tick_params(axis='y', labelcolor='tab:red')
-    ax1.set_ylim(0, 50)  # Set the range for temperature
+    ax1.set_ylim(20, 40)  # Set the range for temperature
     ax1.legend(loc='upper left')
 
     ax2 = ax1.twinx()
@@ -67,8 +67,8 @@ def plot_data():
     ax2.legend(loc='upper right')
 
     # Set x-axis major locator and formatter
-    ax1.xaxis.set_major_locator(HourLocator(interval=1))
-    ax1.xaxis.set_major_formatter(DateFormatter('%Y-%m-%d %H:%M'))
+    ax1.xaxis.set_major_locator(DayLocator(interval=1))
+    ax1.xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))
 
     fig.tight_layout()
     plt.xticks(rotation=45)
