@@ -6,6 +6,10 @@ import mysql.connector
 from matplotlib.dates import DateFormatter, AutoDateLocator
 import io
 
+# Ensure that the 'Agg' backend is used for non-GUI operations
+import matplotlib
+matplotlib.use('Agg')
+
 def fetch_data():
     # Connect to MySQL database
     conn = mysql.connector.connect(
@@ -21,9 +25,9 @@ def fetch_data():
     one_week_ago_str = one_week_ago.strftime('%Y-%m-%d %H:%M:%S')
 
     query = """
-    SELECT ctime, temp, hum 
-    FROM t_sensors 
-    WHERE ctime >= %s 
+    SELECT ctime, temp, hum
+    FROM t_sensors
+    WHERE ctime >= %s
     ORDER BY ctime DESC
     """
     cursor.execute(query, (one_week_ago_str,))
@@ -37,7 +41,7 @@ def fetch_data():
     df.set_index('ctime', inplace=True)
 
     # Resample the data to every some minutes
-    df_resampled = df.resample('30T').mean()
+    df_resampled = df.resample('30min').mean()
 
     # Drop rows with NaN values that might result from resampling
     df_resampled = df_resampled.dropna()
@@ -83,3 +87,4 @@ def plot_data():
     plt.close()
 
     return buf.getvalue()
+
