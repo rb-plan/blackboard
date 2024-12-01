@@ -1,0 +1,12 @@
+[Unit]
+Description=Blackboard Python Application
+After=network.target
+
+[Service]
+WorkingDirectory=/vms/www/blackboard
+ExecStart=/vms/www/blackboard/.venv/bin/python /vms/www/blackboard/app.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

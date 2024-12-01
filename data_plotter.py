@@ -13,7 +13,7 @@ matplotlib.use('Agg')
 def fetch_data():
     # Connect to MySQL database
     conn = mysql.connector.connect(
-        host='10.24.0.1',
+        host='10.20.0.26',
         user='usr1',
         password='debian',
         database='amadoi'
